@@ -4,10 +4,10 @@ const db = require('../config/db')
 
 // GET PROFILE POSTS BY USER ID
 router.get('/profile/:id', (req,res) => {
-    const sql = "SELECT idpost as IDPost, description, datetime as 'dataPost', p.public AS publicPost, iduser as 'IDUser', concat(name,' ', lastname) as name, u.public AS publicProfile\n" +
+    const sql = "SELECT idpost as idPost, description, datetime as 'dataPost', p.public AS publicPost, iduser as 'idUser', concat(name,' ', lastname) as name, u.public AS publicProfile\n" +
         "FROM posts p\n" +
         "JOIN user u ON u.iduser = p.idautor\n" +
-        "WHERE idautor = ?"
+        "WHERE idautor = ? ORDER BY datetime DESC"
 
     db.query(sql, [req.params.id], (err,result) => {
         if (err) res.status(500).json({error: 'Internal server error'})
@@ -18,7 +18,7 @@ router.get('/profile/:id', (req,res) => {
 
 // GET CRONOLOGIA POSTS BY USERS ID
 router.get('/cronologia', (req,res) => {
-    const sqlFriends = "SELECT p.idpost AS IDPost,concat(u2.name,' ', u2.lastname) as name, p.description, p.datetime AS 'dataPost'\n" +
+    const sqlFriends = "SELECT p.idpost AS idPost,concat(u2.name,' ', u2.lastname) as name, u2.iduser as idUser, p.description, p.datetime AS 'dataPost'\n" +
         "FROM friends a\n" +
         "JOIN user u ON u.iduser = a.idsender\n" +
         "JOIN user u2 ON u2.iduser = a.idreceiver\n" +
