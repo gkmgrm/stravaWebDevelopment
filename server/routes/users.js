@@ -4,7 +4,7 @@ const db = require('../config/db')
 
 // GET PROFILE POSTS BY USER ID
 router.get('/profile/:id', (req,res) => {
-    const sql = "SELECT idpost, description, datetime, p.public AS publicPost, iduser, concat(name,' ', lastname) as name, u.public AS publicProfile\n" +
+    const sql = "SELECT idpost as IDPost, description, datetime as 'dataPost', p.public AS publicPost, iduser as 'IDUser', concat(name,' ', lastname) as name, u.public AS publicProfile\n" +
         "FROM posts p\n" +
         "JOIN user u ON u.iduser = p.idautor\n" +
         "WHERE idautor = ?"
@@ -32,6 +32,16 @@ router.get('/cronologia', (req,res) => {
     })
 })
 
+// GET USERS HIMSELF
+router.get('/me', (req,res) => {
+    const sql = "SELECT iduser, concat(name, ' ', lastname) as 'name', email, public\n" +
+        "FROM strava.user WHERE iduser = ?\n"
+    db.query(sql, [req.user.id], (err,result) => {
+        if (err) res.status(500).json({error:'Internal server error'})
+
+        res.status(200).json(result[0])
+    })
+})
 
 
 module.exports = router;
