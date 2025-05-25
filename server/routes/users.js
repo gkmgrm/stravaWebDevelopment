@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
 const db = require('../config/db')
+const  {profilePermisson} = require('../middleware/auth')
 
 // GET PROFILE POSTS BY USER ID
-router.get('/profile/:id', (req,res) => {
+router.get('/profile/:id', profilePermisson, (req,res) => {
     const sql = "SELECT idpost as idPost, description, datetime as 'dataPost', p.public AS publicPost, iduser as 'idUser', concat(name,' ', lastname) as name, u.public AS publicProfile\n" +
         "FROM posts p\n" +
         "JOIN user u ON u.iduser = p.idautor\n" +

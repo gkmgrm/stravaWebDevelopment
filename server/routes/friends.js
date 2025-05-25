@@ -32,6 +32,7 @@ router.get('/requests', (req,res) => {
     })
 })
 
+// GET ALL FRIENDS
 router.get('/all', (req,res) => {
     const sql = "SELECT  concat(name,' ', lastname) as name, public, iduser as idUser \n" +
         "FROM strava.friends f\n" +
