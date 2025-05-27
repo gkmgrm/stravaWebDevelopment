@@ -22,4 +22,5 @@ const postRoutes = require('./routes/posts')
 app.use('/api/posts', isLogged, postRoutes)
 
 
+
 app.listen(process.env.PORT, () => console.log('running'))
