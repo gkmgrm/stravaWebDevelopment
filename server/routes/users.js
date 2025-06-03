@@ -60,7 +60,19 @@ router.get('/me', (req,res) => {
     db.query(sql, [req.user.id], (err,result) => {
         if (err) res.status(500).json({error:'Internal server error'})
 
-        res.status(200).json(result[0])
+        const user = result[0]
+
+        const sqlArrayLikes = "SELECT idpost FROM strava.likepost\n" +
+            "WHERE iduser = ?"
+        db.query(sqlArrayLikes, [req.user.id], (err,result) => {
+            if (err) res.status(500).json({error:'Internal server error'})
+
+
+            res.status(200).json({
+                user: user,
+                arrayLikes: result.map(r => r.idpost)
+            })
+        })
     })
 })
 

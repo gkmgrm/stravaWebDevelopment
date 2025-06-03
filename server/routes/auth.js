@@ -35,7 +35,7 @@ router.post('/login', (req,res) => {
         res.header('Authorization', token)
         return res.status(200).json({message:'User logged in'})
     })
-
+    
 })
 
 // REGISTER NEW USERS
